@@ -1,4 +1,3 @@
----
 # PHP Login and Registration System:
 
 This repository contains a simple PHP-based login and registration system with password recovery functionality. It uses a MySQL database to store user information. The system consists of the following components:

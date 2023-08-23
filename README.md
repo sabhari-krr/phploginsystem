@@ -106,4 +106,71 @@ id: Primary key (auto-increment)
 Other columns: (These would be based on your implementation)
 Please ensure proper security measures, such as input validation and password hashing, before deploying this system in a production environment.
 
+---------------------------------
+---
+
+## New Feature: Delete User
+
+We've added a new feature to the PHP login and registration system that allows administrators to delete user accounts. This feature is useful for managing user accounts in scenarios where account removal is required.
+
+### How It Works
+
+1. **Backend Logic:**
+
+   The new feature is implemented in the `deluser.php` file. When an administrator submits the delete user form, the provided email and password are checked against the database. If a match is found, the user account associated with the provided email is deleted from the database.
+
+   ```php
+   <?php
+   include ("config.php");
+   if($_SERVER['REQUEST_METHOD']=='POST')
+   {
+       $myusername = mysqli_real_escape_string($db, $_POST['email']);
+       $mypassword = mysqli_real_escape_string($db, $_POST['pwd']);
+
+       // Check if user exists and password matches
+       $sql = "SELECT * FROM users WHERE email = '$myusername' and pwd = '$mypassword'";
+       $count = mysqli_num_rows(mysqli_query($db, $sql));
+
+       if ($count == 1) {
+            // Delete the user account
+            $delquery="DELETE FROM users WHERE email='$myusername'";
+            $delrun=mysqli_query($db,$delquery);
+            if($delrun)
+            {
+                echo "<script>alert('User Deleted');window.location.href='register.php';</script>";
+            }
+       } else {
+          echo "<script>alert('Your Login Name or Password is invalid');window.location.href='deluser.php';</script>";
+          exit();
+       }
+   }
+   ?>
+   ```
+
+2. **Frontend Form:**
+
+   The user interface for this feature is provided through the `deluser.php` file. Administrators need to enter the email and password of the user they want to delete. Upon submission, the form data is sent to the server for processing.
+
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <!-- Head section content -->
+   </head>
+   <body>
+       <!-- Delete user form content -->
+   </body>
+   </html>
+   ```
+
+### How to Use
+
+1. Open the `deluser.php` page from your browser.
+2. Enter the email and password of the user you want to delete.
+3. Click the "Delete user" button.
+4. If the provided email and password match an existing user account, the account will be deleted and a confirmation message will be shown.
+5. If the provided information is incorrect, an error message will be displayed.
+
+Please ensure that only authorized administrators have access to this feature to prevent misuse.
+
 ---
